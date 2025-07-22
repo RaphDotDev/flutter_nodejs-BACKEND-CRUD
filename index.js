@@ -17,7 +17,6 @@ console.log('Connected to server 2000');
 )
 
 //post method/API
-
 app.post('/api/add_product', (req,res) => {
 
 console.log('Result ',req.body);
@@ -42,7 +41,6 @@ res.status(200).send({
 )
 
 //get method 
-
 app.get('/api/get_product', (req,res) => {
 
 if(productData.length >0) {
@@ -58,4 +56,20 @@ res.status(200).send({
 })
 }
 
+})
+
+//put - update the whole product data, patch - update only the certain product object
+app.put ('/api/update/:id', (req,res) => {
+    let id = req.params.id *1;
+    let productToUpdate = productData.find(p=>p.id === id);
+    let index = productData.indexOf(productToUpdate);
+
+    productData[index] = req.body;
+
+    console.log("Updated: ",productData[index]);
+
+    res.status(200).send({
+    'status': "Success",
+    'message': "Product Updated"
+    })
 })
