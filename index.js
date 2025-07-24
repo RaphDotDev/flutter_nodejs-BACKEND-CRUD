@@ -1,20 +1,23 @@
 const express = require("express");
-
+const mongoose = require("mongoose");
 const app = express();
-
 app.use(express.json());
-
 app.use(express.urlencoded({
 extended:true
 }));
 
 const productData = [];
 
+//connect to mongoose
 
-app.listen(2000, ()=> {
-console.log('Connected to server 2000');
-}
-)
+mongoose.connect("mongodb://localhost:27017/")
+.then(() => {
+  console.log("Connected to MongoDB using Mongoose");
+})
+.catch((error) => {
+  console.error("Error connecting to MongoDB:", error);
+});
+
 
 //post method/API
 app.post('/api/add_product', (req,res) => {
