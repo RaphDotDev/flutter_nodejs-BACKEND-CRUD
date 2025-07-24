@@ -94,7 +94,3 @@ app.post('/api/delete/:id', (req, res) => {
   });
 });
 
-app.listen(2000, ()=> {
-console.log('Connected to server 2000');
-}
-)
