@@ -64,12 +64,30 @@ app.put ('/api/update/:id', (req,res) => {
     let productToUpdate = productData.find(p=>p.id === id);
     let index = productData.indexOf(productToUpdate);
 
-    productData[index] = req.body;
+    let body = req.body;
+    productData[index] =req.body;
 
-    console.log("Updated: ",productData[index]);
+    console.log ('Updated data: ', body);
 
     res.status(200).send({
     'status': "Success",
     'message': "Product Updated"
     })
 })
+
+app.post('/api/delete/:id', (req, res) => {
+  let id = Number(req.params.id);
+  let productToUpdate = productData.find(p => p.id === id);
+
+  if (!productToUpdate) {
+    return res.status(404).send({ message: "Product not found" });
+  }
+
+  let index = productData.indexOf(productToUpdate);
+  productData.splice(index, 1);
+  return res.status(204).send({
+    status: "Success",
+    message: "Product Deleted"
+  });
+});
+
