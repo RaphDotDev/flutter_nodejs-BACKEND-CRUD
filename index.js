@@ -1,20 +1,23 @@
 const express = require("express");
-
+const mongoose = require("mongoose");
 const app = express();
-
 app.use(express.json());
-
 app.use(express.urlencoded({
 extended:true
 }));
 
 const productData = [];
 
+//connect to mongoose
 
-app.listen(2000, ()=> {
-console.log('Connected to server 2000');
-}
-)
+mongoose.connect("mongodb://localhost:27017/")
+.then(() => {
+  console.log("Connected to MongoDB using Mongoose");
+})
+.catch((error) => {
+  console.error("Error connecting to MongoDB:", error);
+});
+
 
 //post method/API
 app.post('/api/add_product', (req,res) => {
@@ -64,12 +67,34 @@ app.put ('/api/update/:id', (req,res) => {
     let productToUpdate = productData.find(p=>p.id === id);
     let index = productData.indexOf(productToUpdate);
 
-    productData[index] = req.body;
+    let body = req.body;
+    productData[index] =req.body;
 
-    console.log("Updated: ",productData[index]);
+    console.log ('Updated data: ', body);
 
     res.status(200).send({
     'status': "Success",
     'message': "Product Updated"
     })
 })
+
+app.post('/api/delete/:id', (req, res) => {
+  let id = Number(req.params.id);
+  let productToUpdate = productData.find(p => p.id === id);
+
+  if (!productToUpdate) {
+    return res.status(404).send({ message: "Product not found" });
+  }
+
+  let index = productData.indexOf(productToUpdate);
+  productData.splice(index, 1);
+  return res.status(204).send({
+    status: "Success",
+    message: "Product Deleted"
+  });
+});
+
+app.listen(2000, ()=> {
+console.log('Connected to server 2000');
+}
+)
