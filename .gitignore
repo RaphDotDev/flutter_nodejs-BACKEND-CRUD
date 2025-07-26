@@ -1,0 +1,6 @@
+# ⛔ Ignore node_modules
+node_modules/
+
+# ⛔ Ignore environment or logs (optional)
+.env
+npm-debug.log
